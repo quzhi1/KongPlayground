@@ -13,3 +13,10 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Tilt, helm
+.helm
+tilt_modules
+
+# License
+license
