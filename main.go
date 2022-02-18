@@ -20,7 +20,6 @@ func hello(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Add("Nylas-Request-Uid", "AC462A55:D9E6_0A4D00A6:01BB_620DB985_9FA5B:3CA6")
 	w.Header().Add("Nylas-Event", "request handled")
 	w.Header().Add("Nylas-Provider-Name", "gmail")
-	w.Header().Add("Nylas-Provider-Name", "gmail")
 	w.Header().Add("Nylas-Result-Count", "123")
 	fmt.Fprint(w, "Hello world")
 }
