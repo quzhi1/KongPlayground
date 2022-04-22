@@ -1,0 +1,115 @@
+_format_version: "1.1"
+services:
+- connect_timeout: 60000
+  host: hello-world.default.8090.svc
+  name: default.hello-world.pnum-8090
+  path: /
+  port: 80
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    name: default.hello-world.00
+    path_handling: v0
+    paths:
+    - /hello
+    preserve_host: true
+    protocols:
+    - http
+    - https
+    regex_priority: 100
+    request_buffering: true
+    response_buffering: true
+    strip_path: true
+    tags:
+    - managed-by-ingress-controller
+  tags:
+  - managed-by-ingress-controller
+  write_timeout: 60000
+upstreams:
+- algorithm: round-robin
+  hash_fallback: none
+  hash_on: none
+  hash_on_cookie_path: /
+  healthchecks:
+    active:
+      concurrency: 10
+      healthy:
+        http_statuses:
+        - 200
+        - 302
+        interval: 0
+        successes: 0
+      http_path: /
+      https_verify_certificate: true
+      timeout: 1
+      type: http
+      unhealthy:
+        http_failures: 0
+        http_statuses:
+        - 429
+        - 404
+        - 500
+        - 501
+        - 502
+        - 503
+        - 504
+        - 505
+        interval: 0
+        tcp_failures: 0
+        timeouts: 0
+    passive:
+      healthy:
+        http_statuses:
+        - 200
+        - 201
+        - 202
+        - 203
+        - 204
+        - 205
+        - 206
+        - 207
+        - 208
+        - 226
+        - 300
+        - 301
+        - 302
+        - 303
+        - 304
+        - 305
+        - 306
+        - 307
+        - 308
+        successes: 0
+      type: http
+      unhealthy:
+        http_failures: 0
+        http_statuses:
+        - 429
+        - 500
+        - 503
+        tcp_failures: 0
+        timeouts: 0
+    threshold: 0
+  name: hello-world.default.8090.svc
+  slots: 10000
+  tags:
+  - managed-by-ingress-controller
+  targets:
+  - tags:
+    - managed-by-ingress-controller
+    target: 172.17.0.6:8090
+    weight: 100
+plugins:
+- config:
+    echo_downstream: true
+    generator: uuid
+    header_name: kong-hello-world-unique-id
+  enabled: true
+  name: correlation-id
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
