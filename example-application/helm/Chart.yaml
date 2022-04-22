@@ -1,0 +1,4 @@
+name: example-application
+description: Example application to test Kong
+version: 0.0.1
+apiVersion: v1

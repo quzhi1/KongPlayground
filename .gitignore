@@ -20,3 +20,6 @@ tilt_modules
 
 # License
 license
+
+# Mac
+.DS_Store
