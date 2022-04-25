@@ -1,10 +1,10 @@
 _format_version: "1.1"
 services:
 - connect_timeout: 60000
-  host: hello-world.default.8090.svc
-  name: default.hello-world.pnum-8090
+  host: hello-world.default.svc.cluster.local
+  name: hello-world
   path: /
-  port: 80
+  port: 8090
   protocol: http
   read_timeout: 60000
   retries: 5
@@ -102,6 +102,7 @@ upstreams:
     target: 172.17.0.6:8090
     weight: 100
 plugins:
+# Correlation ID plugin: https://docs.konghq.com/hub/kong-inc/correlation-id/
 - config:
     echo_downstream: true
     generator: uuid

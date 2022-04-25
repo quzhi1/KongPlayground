@@ -6,6 +6,16 @@ Playground for Kong API gateway
 tilt up
 ```
 
+## Testing
+1. Use Postman to call http://localhost:8080/hello
+2. Find header `kong-hello-world-unique-id` (set by plugin) and `X-Kong-Proxy-Latency` (set by Kong)
+
+## Trouble shooting
+- Kong config: https://localhost:8444
+- Kong services: https://localhost:8444/services
+- Kong routes: https://localhost:8444/routes
+- Kong plugins: https://localhost:8444/plugins
+
 ## Note
 ### Kong k8s yaml
 I got the yaml file from Kong's Github repo: https://github.com/Kong/kubernetes-ingress-controller/blob/main/deploy/single/all-in-one-postgres.yaml
