@@ -7,20 +7,22 @@ compile_opt = 'GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 '
 # Compile Kong go plugin
 local_resource(
   'kong-plugin-compile',
-  'go build -buildmode plugin -o bin/go-hello.so plugin/go-hello.go',
+  # 'go build -buildmode plugin -o bin/go-hello.so plugin/go-hello.go',
+  compile_opt + 'go build -o bin/go-hello plugin/go-hello.go',
+  # 'go build -o bin/go-hello plugin/go-hello.go',
   deps=['example-application/main.go'],
   labels="kong",
 )
 
 # Build Kong ingress with plugin binary
-# docker_build(
-#   'kong-with-plugin-image',
-#   '.',
-#   dockerfile='plugin/Dockerfile',
-#   only=[
-#     'plugin/go-hello.go',
-#   ],
-# )
+docker_build(
+  'kong-with-plugin-image',
+  '.',
+  dockerfile='plugin/Dockerfile',
+  only=[
+    'bin/go-hello',
+  ],
+)
 
 # Deploy Kong
 k8s_yaml('all-in-one-postgres.yaml')

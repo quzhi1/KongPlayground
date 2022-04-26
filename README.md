@@ -8,7 +8,9 @@ tilt up
 
 ## Testing
 1. Use Postman to call http://localhost:8080/hello
-2. Find header `kong-hello-world-unique-id` (set by plugin) and `X-Kong-Proxy-Latency` (set by Kong)
+2. Find following headers:
+   1. `kong-hello-world-unique-id` is set by correlation-id plugin. This plugin is provided by Kong.
+   2. `x-hello-from-go` is set by a custom go plugin.
 
 ## Trouble shooting
 - Kong config: https://localhost:8444

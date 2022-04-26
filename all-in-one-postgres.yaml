@@ -1381,18 +1381,20 @@ spec:
           value: /dev/stderr
         - name: KONG_PROXY_ERROR_LOG
           value: /dev/stderr
-        # - name: KONG_PLUGINSERVER_NAMES
-        #   value: go
-        # - name: KONG_PLUGINSERVER_GO_SOCKET
-        #   value: /usr/local/kong/go_pluginserver.sock
-        # - name: KONG_PLUGINSERVER_GO_START_CMD
-        #   value: /usr/local/bin/go-plugin -kong-prefix /usr/local/kong
-        # - name: KONG_PLUGINSERVER_GO_QUERY_CMD
-        #   value: /usr/local/bin/go-plugin -dump -kong-prefix /usr/local/kong
         # - name: KONG_PLUGINS
-        #   value: bundled,go-hello
-        # image: kong-with-plugin-image
-        image: kong:2.8
+        #   value: bundled
+        - name: KONG_PLUGINSERVER_NAMES
+          value: go-hello
+        - name: KONG_PLUGINSERVER_GO_HELLO_SOCKET
+          value: /usr/local/kong/go-hello.socket
+        - name: KONG_PLUGINSERVER_GO_HELLO_START_CMD
+          value: /usr/local/bin/go-hello
+        - name: KONG_PLUGINSERVER_GO_HELLO_QUERY_CMD
+          value: /usr/local/bin/go-hello -dump
+        - name: KONG_PLUGINS
+          value: bundled,go-hello
+        image: kong-with-plugin-image
+        # image: kong:2.8
         lifecycle:
           preStop:
             exec:

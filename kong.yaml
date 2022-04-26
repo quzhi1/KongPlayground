@@ -115,6 +115,10 @@ plugins:
   - http
   - https
 # # Custom plugin
-# - name: go-hello
-#   config:
-#     message: hello-world
+- name: go-hello
+  config:
+    message: hello-world
+# pluginserver_names: go-hello
+# pluginserver_my_plugin_socket: /usr/local/kong/go-hello.socket
+# pluginserver_my_plugin_start_cmd: /usr/local/bin/go-hello
+# pluginserver_my_plugin_query_cmd: /usr/local/bin/go-hello -dump
