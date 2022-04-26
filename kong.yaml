@@ -103,14 +103,18 @@ upstreams:
     weight: 100
 plugins:
 # Correlation ID plugin: https://docs.konghq.com/hub/kong-inc/correlation-id/
-- config:
+- name: correlation-id
+  config:
     echo_downstream: true
     generator: uuid
     header_name: kong-hello-world-unique-id
   enabled: true
-  name: correlation-id
   protocols:
   - grpc
   - grpcs
   - http
   - https
+# # Custom plugin
+# - name: go-hello
+#   config:
+#     message: hello-world
