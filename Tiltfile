@@ -29,7 +29,7 @@ k8s_yaml('all-in-one-postgres.yaml')
 
 # Kong services config
 kong_resource_map = {
-  "ingress-kong": [8080,8444],
+  "ingress-kong": [],
   "postgres": 5432,
   "kong-migrations": [],
 }

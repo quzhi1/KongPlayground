@@ -8,7 +8,7 @@ tilt up
 
 ## Testing
 1. Use Postman to call http://localhost:8080/hello
-2. It should redirect to Postman Echo site
+2. It should have custom response headers
 
 ## Trouble shooting
 - Kong config: https://localhost:8444
