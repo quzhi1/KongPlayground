@@ -10,7 +10,7 @@ local_resource(
   # 'go build -buildmode plugin -o bin/go-hello.so plugin/go-hello.go',
   compile_opt + 'go build -o bin/go-hello plugin/go-hello.go',
   # 'go build -o bin/go-hello plugin/go-hello.go',
-  deps=['example-application/main.go'],
+  deps=['plugin/go-hello.go'],
   labels="kong",
 )
 
@@ -29,8 +29,8 @@ k8s_yaml('all-in-one-postgres.yaml')
 
 # Kong services config
 kong_resource_map = {
-  "ingress-kong": [31104],
-  "postgres": [5432],
+  "ingress-kong": [8080,8444],
+  "postgres": 5432,
   "kong-migrations": [],
 }
 

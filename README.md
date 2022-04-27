@@ -8,9 +8,7 @@ tilt up
 
 ## Testing
 1. Use Postman to call http://localhost:8080/hello
-2. Find following headers:
-   1. `kong-hello-world-unique-id` is set by correlation-id plugin. This plugin is provided by Kong.
-   2. `x-hello-from-go` is set by a custom go plugin.
+2. It should redirect to Postman Echo site
 
 ## Trouble shooting
 - Kong config: https://localhost:8444
@@ -18,10 +16,13 @@ tilt up
 - Kong routes: https://localhost:8444/routes
 - Kong plugins: https://localhost:8444/plugins
 
-## Note
-### Kong k8s yaml
+## Kong k8s yaml
 I got the yaml file from Kong's Github repo: https://github.com/Kong/kubernetes-ingress-controller/blob/main/deploy/single/all-in-one-postgres.yaml
-However, in order to talk to admin API, I changed the configuration of service `kong-validation-webhook`:
+
+There are several changes you need to make:
+
+### Expose admin API
+In order to talk to admin API, I changed the configuration of service `kong-validation-webhook`:
 ```yaml
 apiVersion: v1
 kind: Service
@@ -41,4 +42,22 @@ spec:
   type: LoadBalancer
   selector:
     app: ingress-kong
+```
+
+### Replace official image
+You also need to replace official Kong image with an image with go plugin. So change the image name from `image: kong:2.8` to `image: kong-with-plugin-image`
+
+## Set environment variable
+Find the `proxy` container, and add the following environment variables:
+```yaml
+- name: KONG_PLUGINSERVER_NAMES
+  value: go-hello
+- name: KONG_PLUGINSERVER_GO_HELLO_SOCKET
+  value: /usr/local/kong/go-hello.socket
+- name: KONG_PLUGINSERVER_GO_HELLO_START_CMD
+  value: /usr/local/bin/go-hello
+- name: KONG_PLUGINSERVER_GO_HELLO_QUERY_CMD
+  value: /usr/local/bin/go-hello -dump
+- name: KONG_PLUGINS
+  value: bundled,go-hello
 ```

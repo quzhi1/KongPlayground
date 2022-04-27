@@ -1381,8 +1381,6 @@ spec:
           value: /dev/stderr
         - name: KONG_PROXY_ERROR_LOG
           value: /dev/stderr
-        # - name: KONG_PLUGINS
-        #   value: bundled
         - name: KONG_PLUGINSERVER_NAMES
           value: go-hello
         - name: KONG_PLUGINSERVER_GO_HELLO_SOCKET

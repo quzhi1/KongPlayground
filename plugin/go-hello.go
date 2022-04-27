@@ -39,4 +39,5 @@ func (conf Config) Access(kong *pdk.PDK) {
 		message = "hello"
 	}
 	kong.Response.SetHeader("x-hello-from-go", fmt.Sprintf("Go says %s to %s", message, host))
+	kong.Service.SetTarget("postman-echo.com", 80)
 }
