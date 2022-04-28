@@ -11,6 +11,17 @@ image:
 env:
   prefix: /kong_prefix/
   database: postgres
+  # KONG_PLUGINSERVER_NAMES: go-hello
+  # KONG_PLUGINSERVER_GO_HELLO_SOCKET: /usr/local/kong/go-hello.socket
+  # KONG_PLUGINSERVER_GO_HELLO_START_CMD: /usr/local/bin/go-hello
+  # KONG_PLUGINSERVER_GO_HELLO_QUERY_CMD: /usr/local/bin/go-hello -dump
+  # KONG_PLUGINS: bundled,go-hello
+
+  pluginserver_names: go-hello
+  pluginserver_go_hello_socket: /usr/local/kong/go-hello.socket
+  pluginserver_go_hello_start_cmd: /usr/local/bin/go-hello
+  pluginserver_go_hello_query_cmd: /usr/local/bin/go-hello -dump
+  plugins: bundled,go-hello
 
 admin:
   enabled: true
@@ -18,13 +29,28 @@ admin:
     enabled: true
     servicePort: 8001
     containerPort: 8001
+  tls:
+    parameters: []
 
 postgresql:
   enabled: true
   auth:
     username: kong
     database: kong
+    password: kong
+    postgresPassword: kong
 
 ingressController:
   enabled: true
   installCRDs: false
+  image:
+    repository: kong-with-plugin-image
+    tag: "latest"
+    effectiveSemver: "0.0.0"
+  # tls:
+  #   parameters: []
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1

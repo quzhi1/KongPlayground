@@ -25,13 +25,20 @@ docker_build(
 )
 
 # Deploy Kong
-k8s_yaml('all-in-one-postgres.yaml')
+# k8s_yaml('all-in-one-postgres.yaml')
+helm_remote(
+  'kong',
+  repo_name='kong',
+  repo_url='https://charts.konghq.com',
+  values="developer.kong.values.yaml",
+)
 
 # Kong services config
 kong_resource_map = {
-  "ingress-kong": [],
-  "postgres": 5432,
-  "kong-migrations": [],
+  # "ingress-kong": [],
+  "kong-kong": [],
+  "kong-postgresql": 5432,
+  # "kong-migrations": [],
 }
 
 # Lable Kong and port forward
@@ -46,8 +53,8 @@ for kong_resource, ports in kong_resource_map.items():
 local_resource(
   'expose-kong-proxy',
   '',
-  serve_cmd='kubectl -n kong port-forward service/kong-proxy 8080:80',
-  resource_deps=["ingress-kong"],
+  serve_cmd='kubectl port-forward service/kong-kong-proxy 8080:80',
+  resource_deps=["kong-kong"],
   labels="kong",
 )
 
@@ -55,8 +62,8 @@ local_resource(
 local_resource(
   'expose-kong-ingress',
   '',
-  serve_cmd='kubectl -n kong port-forward service/kong-validation-webhook 8444:8444',
-  resource_deps=["ingress-kong"],
+  serve_cmd='kubectl port-forward service/kong-kong-admin 8444:8444',
+  resource_deps=["kong-kong"],
   labels="kong",
 )
 
