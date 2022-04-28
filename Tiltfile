@@ -7,9 +7,7 @@ compile_opt = 'GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 '
 # Compile Kong go plugin
 local_resource(
   'kong-plugin-compile',
-  # 'go build -buildmode plugin -o bin/go-hello.so plugin/go-hello.go',
   compile_opt + 'go build -o bin/go-hello plugin/go-hello.go',
-  # 'go build -o bin/go-hello plugin/go-hello.go',
   deps=['plugin/go-hello.go'],
   labels="kong",
 )
