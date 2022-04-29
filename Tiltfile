@@ -67,7 +67,7 @@ local_resource(
   "apply-kong-config",
   "deck sync --kong-addr https://localhost:8444 --tls-skip-verify",
   deps=["kong.yaml"],
-  resource_deps=["expose-kong-ingress"],
+  resource_deps=["expose-kong-ingress", "kong-kong"],
   labels="kong",
 )
 

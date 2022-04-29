@@ -118,3 +118,8 @@ plugins:
 - name: go-hello
   config:
     message: hello-world
+  protocols:
+  - grpc
+  - grpcs
+  - http
+  - https
