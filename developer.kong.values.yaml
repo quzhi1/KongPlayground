@@ -5,23 +5,18 @@
 # kubectl port-forward deploy/your-deployment-kong 8001:8001
 
 image:
-  repository: kong
-  tag: "2.8"
+  repository: kong-with-plugin-image
+  tag: "latest"
 
 env:
   prefix: /kong_prefix/
   database: postgres
-  # KONG_PLUGINSERVER_NAMES: go-hello
-  # KONG_PLUGINSERVER_GO_HELLO_SOCKET: /usr/local/kong/go-hello.socket
-  # KONG_PLUGINSERVER_GO_HELLO_START_CMD: /usr/local/bin/go-hello
-  # KONG_PLUGINSERVER_GO_HELLO_QUERY_CMD: /usr/local/bin/go-hello -dump
-  # KONG_PLUGINS: bundled,go-hello
-
   pluginserver_names: go-hello
   pluginserver_go_hello_socket: /usr/local/kong/go-hello.socket
   pluginserver_go_hello_start_cmd: /usr/local/bin/go-hello
   pluginserver_go_hello_query_cmd: /usr/local/bin/go-hello -dump
   plugins: bundled,go-hello
+  # plugins: bundled
 
 admin:
   enabled: true
@@ -43,14 +38,14 @@ postgresql:
 ingressController:
   enabled: true
   installCRDs: false
-  image:
-    repository: kong-with-plugin-image
-    tag: "latest"
-    effectiveSemver: "0.0.0"
+  # image:
+  #   repository: kong-with-plugin-image
+  #   tag: "latest"
+  #   effectiveSemver: "0.0.0"
   # tls:
   #   parameters: []
 
 autoscaling:
-  enabled: false
+  enabled: true
   minReplicas: 1
   maxReplicas: 1
