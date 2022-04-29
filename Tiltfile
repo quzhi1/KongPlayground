@@ -23,7 +23,6 @@ docker_build(
 )
 
 # Deploy Kong
-# k8s_yaml('all-in-one-postgres.yaml')
 helm_remote(
   'kong',
   repo_name='kong',
@@ -33,10 +32,8 @@ helm_remote(
 
 # Kong services config
 kong_resource_map = {
-  # "ingress-kong": [],
   "kong-kong": [],
   "kong-postgresql": 5432,
-  # "kong-migrations": [],
 }
 
 # Lable Kong and port forward
