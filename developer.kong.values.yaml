@@ -16,7 +16,6 @@ env:
   pluginserver_go_hello_start_cmd: /usr/local/bin/go-hello
   pluginserver_go_hello_query_cmd: /usr/local/bin/go-hello -dump
   plugins: bundled,go-hello
-  # plugins: bundled
 
 admin:
   enabled: true
@@ -38,12 +37,6 @@ postgresql:
 ingressController:
   enabled: true
   installCRDs: false
-  # image:
-  #   repository: kong-with-plugin-image
-  #   tag: "latest"
-  #   effectiveSemver: "0.0.0"
-  # tls:
-  #   parameters: []
 
 autoscaling:
   enabled: true
