@@ -38,6 +38,7 @@ func (conf Config) Access(kong *pdk.PDK) {
 	if message == "" {
 		message = "hello"
 	}
-	kong.Response.SetHeader("x-hello-from-go", fmt.Sprintf("Go says %s to %s", message, host))
-	// kong.Service.SetTarget("postman-echo.com", 80)
+	kong.ServiceRequest.SetHeader("x-hello-from-go", fmt.Sprintf("Go says %s to %s", message, host))
+	kong.ServiceRequest.SetQuery(map[string][]string{"hello-query": {"world"}})
+	kong.Service.SetTarget("mockbin.com", 80)
 }

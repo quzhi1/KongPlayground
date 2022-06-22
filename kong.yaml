@@ -3,7 +3,7 @@ services:
 - connect_timeout: 60000
   host: hello-world.default.svc.cluster.local
   name: hello-world
-  path: /
+  path: /request
   port: 8090
   protocol: http
   read_timeout: 60000
@@ -13,7 +13,7 @@ services:
     name: default.hello-world.00
     path_handling: v0
     paths:
-    - /hello
+    - /request
     preserve_host: true
     protocols:
     - http

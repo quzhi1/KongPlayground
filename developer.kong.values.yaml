@@ -19,6 +19,10 @@ admin:
   tls:
     parameters: []
 
+proxy:
+  servicePort: 8000
+  containerPort: 8000
+
 postgresql:
   enabled: true
   auth:

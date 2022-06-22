@@ -30,44 +30,48 @@ helm_remote(
   values="developer.kong.values.yaml",
 )
 
-# Kong services config
-kong_resource_map = {
-  "kong-kong": [],
-  "kong-postgresql": 5432,
-}
-
-# Lable Kong and port forward
-for kong_resource, ports in kong_resource_map.items():
-  k8s_resource(
-    kong_resource,
-    port_forwards=ports,
-    labels="kong",
-  )
-
-# Port forward kong-proxy
-local_resource(
-  'expose-kong-proxy',
-  '',
-  serve_cmd='kubectl port-forward service/kong-kong-proxy 8080:80',
-  resource_deps=["kong-kong"],
+# Lable postgresql and port forward
+k8s_resource(
+  "kong-postgresql",
+  port_forwards=5432,
   labels="kong",
 )
 
-# Port forward kong-ingress (admin)
-local_resource(
-  'expose-kong-ingress',
-  '',
-  serve_cmd='kubectl port-forward service/kong-kong-admin 8444:8444',
-  resource_deps=["kong-kong"],
+# Init migration
+k8s_resource(
+  "kong-kong-init-migrations",
   labels="kong",
+  resource_deps=["kong-postgresql"],
+)
+
+# Pre upgrade migration
+k8s_resource(
+  "kong-kong-pre-upgrade-migrations",
+  labels="kong",
+  resource_deps=["kong-kong-init-migrations"],
+)
+
+# Post upgrade migration
+k8s_resource(
+  "kong-kong-post-upgrade-migrations",
+  labels="kong",
+  resource_deps=["kong-kong-pre-upgrade-migrations"],
+)
+
+# Lable Kong and port forward
+k8s_resource(
+  "kong-kong",
+  port_forwards=[8000, 8001],
+  labels="kong",
+  resource_deps=["kong-kong-post-upgrade-migrations"],
 )
 
 # Sync Kong config
 local_resource(
   "apply-kong-config",
-  "deck sync --kong-addr https://localhost:8444 --tls-skip-verify",
+  "deck sync --kong-addr http://localhost:8001",
   deps=["kong.yaml"],
-  resource_deps=["expose-kong-ingress", "kong-kong"],
+  resource_deps=["kong-kong"],
   labels="kong",
 )
 

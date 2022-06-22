@@ -1,4 +1,4 @@
-FROM kong:2.8.1-alpine
+FROM kong/kong-gateway:2.8
 
 ADD bin/go-hello /usr/local/bin/go-hello
 
