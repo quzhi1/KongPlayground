@@ -6,9 +6,6 @@
 package main
 
 import (
-	"fmt"
-	"log"
-
 	"github.com/Kong/go-pdk"
 	"github.com/Kong/go-pdk/server"
 )
@@ -29,16 +26,44 @@ func New() interface{} {
 }
 
 func (conf Config) Access(kong *pdk.PDK) {
-	host, err := kong.Request.GetHeader("host")
-	if err != nil {
-		log.Printf("Error reading 'host' header: %s", err.Error())
-	}
-
 	message := conf.Message
 	if message == "" {
 		message = "hello"
 	}
-	kong.ServiceRequest.SetHeader("x-hello-from-go", fmt.Sprintf("Go says %s to %s", message, host))
-	kong.ServiceRequest.SetQuery(map[string][]string{"hello-query": {"world"}})
+	kong.Log.Notice("Message: " + message)
+
+	// Set target
 	kong.Service.SetTarget("mockbin.com", 80)
+
+	// Set headers
+	for key, value := range getRequestHeaders() {
+		err := kong.ServiceRequest.SetHeader(key, value)
+		if err != nil {
+			kong.Log.Err("Error when setting request header: " + err.Error())
+		}
+	}
+
+	// Set query params
+	kong.ServiceRequest.SetQuery(map[string][]string{"hello-query": {"world"}})
+
+	// Set header again
+	kong.ServiceRequest.SetHeader("x-lowercase-zhi", "qu")
+}
+
+func getRequestHeaders() map[string]string {
+	return map[string]string{
+		"X-Nylas-Name":             "Zhi Qu",
+		"X-Nylas-Email":            "hello@qu.com",
+		"X-Nylas-Email1":           "hello@qu.com",
+		"X-Nylas-Email11":          "hello@qu.com",
+		"X-Nylas-Email111":         "hello@qu.com",
+		"X-Nylas-Email1111":        "hello@qu.com",
+		"X-Nylas-Email11111":       "hello@qu.com",
+		"X-Nylas-Email111111":      "hello@qu.com",
+		"X-Nylas-Email1111111":     "hello@qu.com",
+		"X-Nylas-Email11111111":    "hello@qu.com",
+		"X-Nylas-Email111111111":   "hello@qu.com",
+		"X-Nylas-Email1111111111":  "hello@qu.com",
+		"X-Nylas-Email11111111111": "hello@qu.com",
+	}
 }
